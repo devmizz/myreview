@@ -45,6 +45,6 @@
 ## 개발 방법
 
 - TDD 연습
-- Jacoco 85%
+- Jacoco 85%시
 - QueryDSL 연습
 - 배포
