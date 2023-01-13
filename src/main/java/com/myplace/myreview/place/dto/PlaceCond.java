@@ -9,7 +9,8 @@ import lombok.Setter;
 @Builder
 public class PlaceCond {
 
-    private int page;
+    private int currentPage;
     private int postPerPage;
-    private String sort;
+    private SortStandard sortStandard;
+    private SortOrder order;
 }
