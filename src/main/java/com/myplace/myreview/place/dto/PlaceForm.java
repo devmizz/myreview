@@ -8,21 +8,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 public class PlaceForm {
 
     private String name;
     private String address;
     private String review;
     private int grade;
-
-    @Builder
-    public PlaceForm(String name, String address, String review, int grade) {
-        this.name = name;
-        this.address = address;
-        this.review = review;
-        this.grade = grade;
-    }
 
     public Place toEntity() {
         return Place.builder()

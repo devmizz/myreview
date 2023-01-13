@@ -1,11 +1,11 @@
-package com.myplace.myreview.place.domain;
+package com.myplace.myreview.place.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import com.myplace.myreview.place.domain.Place;
 import com.myplace.myreview.place.dto.PlaceForm;
 import com.myplace.myreview.place.repository.PlaceRepository;
-import com.myplace.myreview.place.service.PlaceService;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,8 +23,11 @@ class PlaceServiceTest {
     @InjectMocks
     PlaceService placeService;
 
+    @InjectMocks
+    PlaceProvider placeProvider;
+
     @Test
-    public void 장소_등록() throws Exception {
+    public void 장소_등록_및_조회() throws Exception {
       // given
         PlaceForm placeForm = PlaceForm.builder()
             .name("장소A")
@@ -39,13 +42,13 @@ class PlaceServiceTest {
 
         Optional<Place> optPlace = Optional.of(place);
 
-        when(placeRepository.save(any())).thenReturn(place);
+        when(placeRepository.save(any(Place.class))).thenReturn(place);
         when(placeRepository.findById(1L)).thenReturn(optPlace);
 
       // when
         long savedId = placeService.save(placeForm);
 
       // then
-        Assertions.assertThat(savedId).isEqualTo(placeService.findOne(savedId).getId());
+        Assertions.assertThat(savedId).isEqualTo(placeProvider.findOne(savedId).getId());
     }
 }

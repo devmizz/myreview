@@ -11,3 +11,7 @@
   - [dbdiagram](https://dbdiagram.io/d/63bfb7cc6afaa541e5d1f85b)
 - [x] 기능 구현 사항 작성
 - [x] 등록 구현
+
+### 2023/01/13 (금)
+- [ ] 여러건 조회
+  - 페이징 기능 이용

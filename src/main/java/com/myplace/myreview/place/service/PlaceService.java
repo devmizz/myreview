@@ -7,8 +7,10 @@ import com.myplace.myreview.place.repository.PlaceRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class PlaceService {
 
@@ -18,18 +20,5 @@ public class PlaceService {
         Place place = placeRepository.save(placeForm.toEntity());
 
         return place.getId();
-    }
-
-    public PlaceParam findOne(long id) {
-        Place place = placeRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 장소입니다."));
-
-        return PlaceParam.builder()
-            .id(place.getId())
-            .name(place.getName())
-            .address(place.getAddress())
-            .review(place.getReview())
-            .grade(place.getGrade())
-            .build();
     }
 }
