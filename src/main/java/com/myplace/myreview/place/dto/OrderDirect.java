@@ -1,11 +1,11 @@
 package com.myplace.myreview.place.dto;
 
-public enum SortOrder {
+public enum OrderDirect {
     ASCENDING("ascending"), DESCENDING("descending");
 
     private String value;
 
-    private SortOrder(String value) {
+    private OrderDirect(String value) {
         this.value = value;
     }
 

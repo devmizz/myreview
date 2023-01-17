@@ -1,11 +1,11 @@
 package com.myplace.myreview.place.dto;
 
-public enum SortStandard {
+public enum OrderStandard {
     NAME("name"), GRADE("grade");
 
     private String value;
 
-    private SortStandard(String value) {
+    private OrderStandard(String value) {
         this.value = value;
     }
 
