@@ -3,6 +3,7 @@ package com.myplace.myreview.place.repository;
 import static com.myplace.myreview.place.domain.QPlace.place;
 
 import com.myplace.myreview.global.exception.DataNotFoundException;
+import com.myplace.myreview.global.exception.NoColumnException;
 import com.myplace.myreview.place.domain.Place;
 import com.myplace.myreview.place.dto.OrderDirect;
 import com.myplace.myreview.place.dto.OrderStandard;
@@ -32,7 +33,7 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
     public Page<Place> findAll(PlaceCond placeCond) {
 
         List<Place> places = jpaQueryFactory.selectFrom(place)
-            .where(getWhereExpression(placeCond.getSearchStandard(), placeCond.getSearchWord()))
+            .where(getWhereExpression(placeCond.getSearchStandard(), placeCond.getSearchWord(), placeCond.getSearchGrade()))
             .offset(placeCond.getCurrentPage() * placeCond.getPostPerPage())
             .limit(placeCond.getPostPerPage())
             .orderBy(getOrderExpression(placeCond.getOrderStandard(), placeCond.getOrderDirect()))
@@ -51,17 +52,26 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
         return new PageImpl<>(places, pageable, count);
     }
 
-    private Predicate getWhereExpression(SearchStandard searchStandard, String searchWord) {
-        if (searchWord == null) {
+    private Predicate getWhereExpression(SearchStandard searchStandard, String searchWord, int grade) {
+
+        if (searchStandard == null || (searchWord == null && grade == 0)) {
             return place.id.eq(place.id);
         }
 
-        ComparableExpressionBase columnPath = getColumnPath(searchStandard.getValue());
+        switch (searchStandard) {
+            case NAME:
+                return place.name.contains(searchWord);
+            case GRADE:
+                return place.grade.eq(grade);
+            case ADDRESS:
+                return place.address.contains(searchWord);
+        }
 
-        return columnPath.eq(searchWord);
+        return place.id.eq(place.id);
     }
 
-    private OrderSpecifier getOrderExpression(OrderStandard orderStandard, OrderDirect orderDirect) {
+    private OrderSpecifier getOrderExpression(OrderStandard orderStandard,
+        OrderDirect orderDirect) {
         ComparableExpressionBase columnPath = getColumnPath(orderStandard.getValue());
 
         if (orderDirect.equals(OrderDirect.DESCENDING)) {
@@ -73,18 +83,18 @@ public class PlaceCustomRepositoryImpl implements PlaceCustomRepository {
 
     private ComparableExpressionBase getColumnPath(String columnName) {
         switch (columnName) {
-            case "id" :
+            case "id":
                 return place.id;
-            case "name" :
+            case "name":
                 return place.name;
-            case "address" :
+            case "address":
                 return place.address;
-            case "review" :
+            case "review":
                 return place.review;
-            case "grade" :
+            case "grade":
                 return place.grade;
         }
 
-        return null;
+        throw new NoColumnException("해당하는 컬럼이 존재하지 않습니다.");
     }
 }

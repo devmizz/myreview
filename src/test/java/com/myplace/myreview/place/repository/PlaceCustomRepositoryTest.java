@@ -1,31 +1,30 @@
-package com.myplace.myreview.place.service;
+package com.myplace.myreview.place.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.myplace.myreview.global.exception.DataNotFoundException;
 import com.myplace.myreview.place.domain.Place;
 import com.myplace.myreview.place.dto.PlaceCond;
-import com.myplace.myreview.place.dto.SearchStandard;
-import com.myplace.myreview.place.repository.PlaceCustomRepositoryImpl;
-import com.myplace.myreview.place.repository.PlaceRepository;
 import java.util.ArrayList;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @SpringBootTest
-public class PlaceSearchSpringTest {
+public class PlaceCustomRepositoryTest {
 
     @Autowired
     PlaceRepository placeRepository;
 
     @Autowired
     PlaceCustomRepositoryImpl placeCustomRepository;
-
-    @Autowired
-    PlaceProvider placeProvider;
 
     private static List<Place> places = new ArrayList<>();
 
@@ -51,25 +50,39 @@ public class PlaceSearchSpringTest {
         }
     }
 
-    @BeforeEach
-    public void savePlaces() {
-        placeRepository.saveAll(places);
-    }
-
     @Test
-    public void 장소명_검색() throws Exception {
+    public void 전체조회() throws Exception {
         // given
+        placeRepository.saveAll(places);
+
         PlaceCond placeCond = PlaceCond.builder()
-            .searchStandard(SearchStandard.NAME)
-            .searchWord("B")
+            .currentPage(0)
+            .postPerPage(10)
             .build();
 
         // when
-        Page<Place> placePage = placeCustomRepository.findAll(placeCond);
+        Page<Place> findPlacePage = placeCustomRepository.findAll(placeCond);
 
         // then
-        for(Place p : placePage.getContent()) {
-            Assertions.assertThat(p.getName()).isEqualTo("B");
-        }
+        assertThat(findPlacePage.getTotalElements()).isEqualTo(25);
+        assertThat(findPlacePage.getTotalPages()).isEqualTo(3);
+        assertThat(findPlacePage.getSize()).isEqualTo(10);
+        assertThat(findPlacePage.getNumber()).isEqualTo(0);
+        assertThat(findPlacePage.getNumberOfElements()).isEqualTo(10);
     }
+
+    @Test
+    public void 데이터가_존재하지_않는_경우() throws Exception {
+        // given
+        PlaceCond placeCond = PlaceCond.builder()
+            .currentPage(0)
+            .postPerPage(10)
+            .build();
+
+        // when
+        // then
+        assertThrows(DataNotFoundException.class,
+            () -> placeCustomRepository.findAll(placeCond));
+    }
+
 }
