@@ -33,7 +33,7 @@ public class PlaceProvider {
             .build();
     }
 
-    public Page<Place> findAll(PlaceCond placeCond) {
+    public Page<PlaceParam> findAll(PlaceCond placeCond) {
 
         Page<Place> placePage = placeCustomRepository.findAll(placeCond);
 
@@ -41,8 +41,6 @@ public class PlaceProvider {
             throw new DataNotFoundException("장소가 존재하지 않습니다.");
         }
 
-        return placePage;
+        return placePage.map(PlaceParam::of);
     }
-
-
 }

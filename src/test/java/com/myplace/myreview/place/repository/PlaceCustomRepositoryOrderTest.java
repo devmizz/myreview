@@ -6,7 +6,6 @@ import com.myplace.myreview.place.domain.Place;
 import com.myplace.myreview.place.dto.OrderDirect;
 import com.myplace.myreview.place.dto.OrderStandard;
 import com.myplace.myreview.place.dto.PlaceCond;
-import com.myplace.myreview.place.service.PlaceProvider;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaceCustomRepositoryOrderTest {
 
     @Autowired
-    PlaceProvider placeProvider;
+    PlaceRepository placeRepository;
 
     @Autowired
-    PlaceRepository placeRepository;
+    PlaceCustomRepositoryImpl placeCustomRepository;
 
     private static List<Place> places = new ArrayList<>();
 
@@ -62,7 +61,7 @@ public class PlaceCustomRepositoryOrderTest {
             .build();
 
         // when
-        Page<Place> findPlacePage = placeProvider.findAll(placeCond);
+        Page<Place> findPlacePage = placeCustomRepository.findAll(placeCond);
 
         // then
         assertThat(findPlacePage.getContent().get(0).getName()).isEqualTo("A");
@@ -81,7 +80,7 @@ public class PlaceCustomRepositoryOrderTest {
             .build();
 
         // when
-        Page<Place> findPlacePage = placeProvider.findAll(placeCond);
+        Page<Place> findPlacePage = placeCustomRepository.findAll(placeCond);
 
         // then
         assertThat(findPlacePage.getContent().get(0).getGrade()).isEqualTo(1);
@@ -102,7 +101,7 @@ public class PlaceCustomRepositoryOrderTest {
             .build();
 
         // when
-        Page<Place> findPlacePage = placeProvider.findAll(placeCond);
+        Page<Place> findPlacePage = placeCustomRepository.findAll(placeCond);
 
         // then
         assertThat(findPlacePage.getContent().get(0).getName()).isEqualTo("B");
@@ -122,7 +121,7 @@ public class PlaceCustomRepositoryOrderTest {
             .build();
 
         // when
-        Page<Place> findPlacePage = placeProvider.findAll(placeCond);
+        Page<Place> findPlacePage = placeCustomRepository.findAll(placeCond);
 
         // then
         assertThat(findPlacePage.getContent().get(0).getGrade()).isEqualTo(5);

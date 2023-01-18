@@ -6,6 +6,8 @@ import com.myplace.myreview.place.dto.PlaceParam;
 import com.myplace.myreview.place.repository.PlaceRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,5 +22,9 @@ public class PlaceService {
         Place place = placeRepository.save(placeForm.toEntity());
 
         return place.getId();
+    }
+
+    public Page<Place> findAll(Pageable pageable) {
+        return placeRepository.findAll(pageable);
     }
 }
