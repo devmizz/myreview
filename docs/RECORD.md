@@ -31,5 +31,8 @@
 
 ### 2023/01/18 (수)
 - [x] Service, Provider 테스트 작성
-- [ ] 등록 view
-- [ ] 리스트 view
+
+### 2023/01/19 (목)
+- [x] BootStrap 적용
+- [x] View layout 적용
+- [x] Header 구현
