@@ -36,3 +36,7 @@
 - [x] BootStrap 적용
 - [x] View layout 적용
 - [x] Header 구현
+
+### 2023/01/25 (수)
+- [x] Footer 구현
+- [ ] 등록창 구현
