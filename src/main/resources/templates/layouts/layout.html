@@ -3,10 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
-<head>
-	<link href="/css/bootstrap.css" rel="stylesheet">
 
-</head>
 <body>
 <div>
 	<div>
@@ -23,6 +20,9 @@
 		<!-- 공통 하단-->
 		<th:block th:replace="/layouts/fragments/footer :: footerFragment"></th:block>
 	</div>
+
+	<!-- 공통 스크립트 -->
+	<th:block th:replace="/layouts/fragments/script :: scriptFragment"></th:block>
 </div>
 
 </body>
