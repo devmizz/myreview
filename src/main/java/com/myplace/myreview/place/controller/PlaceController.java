@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
@@ -23,4 +25,10 @@ public class PlaceController {
         return "/places/add";
     }
 
+    @PostMapping("/add")
+    public String addPlace(PlaceForm placeForm) {
+        placeService.save(placeForm);
+
+        return "redirect:/";
+    }
 }
